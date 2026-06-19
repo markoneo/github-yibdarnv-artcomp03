@@ -1,0 +1,33 @@
+<svg width="290" height="260" viewBox="0 0 290 260" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>CompanyWall AA+ 2024 – Artcomp Marko Keder s.p.</title>
+  <desc>CompanyWall bonitetna hiša AA+ certificate of excellence 2024, Artcomp Marko Keder s.p.</desc>
+  <rect x="0" y="0" width="290" height="260" rx="10" fill="#FAFAFA" stroke="#E0E0E0" stroke-width="1"/>
+  <rect x="0" y="0" width="8" height="260" rx="4" fill="#A01020"/>
+  <rect x="12" y="0" width="4" height="260" fill="#A01020" opacity="0.5"/>
+  <rect x="20" y="0" width="2" height="260" fill="#A01020" opacity="0.25"/>
+  <text x="155" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" font-weight="700" fill="#CCCCCC">2024</text>
+  <text x="75" y="170" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="90" font-weight="900" fill="#888888">A</text>
+  <text x="155" y="170" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="90" font-weight="900" fill="#888888">A</text>
+  <text x="215" y="150" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="60" font-weight="900" fill="#A01020">+</text>
+  <circle cx="248" cy="75" r="38" fill="#C9A84C"/>
+  <circle cx="248" cy="75" r="33" fill="#E8D48A"/>
+  <circle cx="248" cy="75" r="27" fill="#1A1A2E"/>
+  <g transform="translate(248,75)">
+    <rect x="-3" y="-38" width="6" height="10" rx="2" fill="#C9A84C"/>
+    <rect x="-3" y="-38" width="6" height="10" rx="2" fill="#C9A84C" transform="rotate(30)"/>
+    <rect x="-3" y="-38" width="6" height="10" rx="2" fill="#C9A84C" transform="rotate(60)"/>
+    <rect x="-3" y="-38" width="6" height="10" rx="2" fill="#C9A84C" transform="rotate(90)"/>
+    <rect x="-3" y="-38" width="6" height="10" rx="2" fill="#C9A84C" transform="rotate(120)"/>
+    <rect x="-3" y="-38" width="6" height="10" rx="2" fill="#C9A84C" transform="rotate(150)"/>
+    <rect x="-3" y="-38" width="6" height="10" rx="2" fill="#C9A84C" transform="rotate(180)"/>
+    <rect x="-3" y="-38" width="6" height="10" rx="2" fill="#C9A84C" transform="rotate(210)"/>
+    <rect x="-3" y="-38" width="6" height="10" rx="2" fill="#C9A84C" transform="rotate(240)"/>
+    <rect x="-3" y="-38" width="6" height="10" rx="2" fill="#C9A84C" transform="rotate(270)"/>
+    <rect x="-3" y="-38" width="6" height="10" rx="2" fill="#C9A84C" transform="rotate(300)"/>
+    <rect x="-3" y="-38" width="6" height="10" rx="2" fill="#C9A84C" transform="rotate(330)"/>
+  </g>
+  <text x="248" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-size="6.5" font-weight="700" fill="#E8D48A">CompanyWall</text>
+  <text x="248" y="78" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="#A8C0D0">bonitetna hiša</text>
+  <text x="248" y="91" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#E8D48A">2024</text>
+  <text x="155" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888888">we.bonitetna</text>
+</svg>

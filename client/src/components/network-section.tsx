@@ -10,12 +10,10 @@ const modes = [
 
 export default function NetworkSection() {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const inView = useInView(ref, { once: true, amount: 0.2 });
 
   return (
-    <section id="network" className="relative py-24 md:py-32 overflow-hidden" ref={ref}>
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/3 rounded-full blur-[150px] -translate-y-1/2 translate-x-1/3" />
-
+    <section id="network" className="relative bg-white py-16 md:py-24 overflow-clip" ref={ref}>
       <div className="relative max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <motion.div
@@ -23,13 +21,13 @@ export default function NetworkSection() {
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7 }}
           >
-            <span className="inline-block text-sm font-semibold text-primary uppercase tracking-wider mb-3">
+            <span className="inline-block text-sm font-semibold text-[#0E7C5A] uppercase tracking-wider mb-3">
               The Network
             </span>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground mb-6">
+            <h2 className="font-heading text-[36px] md:text-[56px] lg:text-[64px] font-bold tracking-[-0.04em] leading-[1.05] text-[#0B0F0E] mb-6">
               One platform, every sustainable mode
             </h2>
-            <p className="text-lg text-muted-foreground leading-relaxed mb-8">
+            <p className="text-lg text-[#6B7280] leading-relaxed mb-8">
               Our technology connects rail, coach, bus, and ferry operators into a single
               interoperable network. Travelers book seamlessly across modes while carriers
               gain visibility to a global audience committed to reducing transport emissions.
@@ -42,18 +40,18 @@ export default function NetworkSection() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={inView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.5, delay: 0.2 + i * 0.1 }}
-                  className="rounded-xl border border-border bg-card p-4 text-center hover:border-primary/30 hover:shadow-md transition-all duration-300"
+                  className="rounded-[20px] bg-[#F5F5F7] p-4 text-center hover:shadow-lg transition-all duration-300"
                 >
-                  <mode.icon size={24} className="text-primary mx-auto mb-2" />
-                  <p className="text-2xl font-bold text-foreground">{mode.count}</p>
-                  <p className="text-xs text-muted-foreground mt-1">{mode.label}</p>
+                  <mode.icon size={24} className="text-[#0E7C5A] mx-auto mb-2" />
+                  <p className="text-2xl font-bold text-[#0B0F0E] font-heading tracking-tight">{mode.count}</p>
+                  <p className="text-xs text-[#6B7280] mt-1">{mode.label}</p>
                 </motion.div>
               ))}
             </div>
 
             <a
               href="#contact"
-              className="inline-flex items-center gap-2 rounded-lg bg-primary text-primary-foreground px-6 py-3 text-base font-semibold hover:opacity-90 transition-opacity"
+              className="inline-flex items-center gap-2 rounded-full bg-[#0E7C5A] text-white px-8 py-3.5 text-base font-semibold hover:bg-[#0a6349] transition-colors"
             >
               Connect to the network
               <ArrowRight size={16} />
@@ -66,19 +64,19 @@ export default function NetworkSection() {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="relative"
           >
-            <div className="rounded-2xl border border-border overflow-hidden relative group">
+            <div className="rounded-[28px] overflow-hidden relative group">
               <img
                 src="/digital-world-map-with-network-pins-4k.jpeg"
                 alt="Global transportation network map showing connected cities worldwide"
                 className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0B0F0E]/80 via-transparent to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <div className="flex items-center gap-3">
-                  <Globe2 size={20} className="text-primary" />
+                  <Globe2 size={20} className="text-[#0E7C5A]" />
                   <div>
-                    <p className="text-sm font-semibold text-foreground">35+ countries connected</p>
-                    <p className="text-xs text-muted-foreground">Europe, Asia, Americas</p>
+                    <p className="text-sm font-semibold text-white">35+ countries connected</p>
+                    <p className="text-xs text-white/60">Europe, Asia, Americas</p>
                   </div>
                 </div>
               </div>

@@ -153,19 +153,153 @@
   }
 }
 
-/* Hero animations */
-@keyframes spin-turbine-1 {
+/* Hero animations – pause when off-screen */
+.hero-paused,
+.hero-paused * {
+  animation-play-state: paused !important;
+}
+
+/* ── Turbines (5 different speeds) ── */
+@keyframes spin-turbine {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
-@keyframes spin-turbine-2 {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.animate-turbine-1 { animation: spin-turbine 18s linear infinite; }
+.animate-turbine-2 { animation: spin-turbine 14s linear infinite; }
+.animate-turbine-3 { animation: spin-turbine 11s linear infinite; }
+.animate-turbine-4 { animation: spin-turbine 16s linear infinite; }
+.animate-turbine-5 { animation: spin-turbine 20s linear infinite; }
+
+/* ── Clouds – long seamless drifts at parallax depths ── */
+@keyframes cloud-drift-slow {
+  0%   { transform: translateX(0); opacity: 0.8; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateX(110vw); opacity: 0; }
 }
-@keyframes spin-turbine-3 {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+@keyframes cloud-drift-med {
+  0%   { transform: translateX(0); opacity: 0.7; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateX(105vw); opacity: 0; }
 }
+@keyframes cloud-drift-fast {
+  0%   { transform: translateX(0); opacity: 0.6; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+.animate-cloud-drift-1 { animation: cloud-drift-slow 90s linear infinite; }
+.animate-cloud-drift-2 { animation: cloud-drift-med 65s linear infinite 8s; }
+.animate-cloud-drift-3 { animation: cloud-drift-slow 80s linear infinite 20s; }
+.animate-cloud-drift-4 { animation: cloud-drift-fast 50s linear infinite 5s; }
+.animate-cloud-drift-5 { animation: cloud-drift-med 70s linear infinite 35s; }
+
+/* ── Butterfly wing flap (scaleX on each wing) ── */
+@keyframes wing-flap-l {
+  0%, 100% { transform: scaleX(1); }
+  50% { transform: scaleX(0.3); }
+}
+@keyframes wing-flap-r {
+  0%, 100% { transform: scaleX(1); }
+  50% { transform: scaleX(0.3); }
+}
+.animate-wing-flap  { animation: wing-flap-l 0.35s ease-in-out infinite; }
+.animate-wing-flap-r { animation: wing-flap-r 0.35s ease-in-out infinite; }
+
+/* ── Butterfly wandering paths ── */
+@keyframes wander-1 {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(12px, -18px); }
+  40% { transform: translate(-8px, -30px); }
+  60% { transform: translate(18px, -14px); }
+  80% { transform: translate(-4px, -24px); }
+}
+@keyframes wander-2 {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(-15px, -12px); }
+  50% { transform: translate(6px, -28px); }
+  75% { transform: translate(-10px, -8px); }
+}
+@keyframes wander-3 {
+  0%, 100% { transform: translate(0, 0); }
+  30% { transform: translate(10px, -22px); }
+  60% { transform: translate(-12px, -10px); }
+  90% { transform: translate(8px, -16px); }
+}
+@keyframes wander-4 {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-6px, -14px); }
+  50% { transform: translate(14px, -26px); }
+  80% { transform: translate(-8px, -6px); }
+}
+.animate-wander-1 { animation: wander-1 8s ease-in-out infinite; }
+.animate-wander-2 { animation: wander-2 10s ease-in-out infinite 1s; }
+.animate-wander-3 { animation: wander-3 9s ease-in-out infinite 2s; }
+.animate-wander-4 { animation: wander-4 11s ease-in-out infinite 0.5s; }
+
+/* ── Birds gliding across the sky ── */
+@keyframes bird-glide-1 {
+  0%   { left: -8%; opacity: 0; }
+  5%   { opacity: 0.6; }
+  90%  { opacity: 0.6; }
+  100% { left: 108%; opacity: 0; }
+}
+@keyframes bird-glide-2 {
+  0%   { right: -8%; opacity: 0; }
+  5%   { opacity: 0.5; }
+  90%  { opacity: 0.5; }
+  100% { right: 108%; opacity: 0; }
+}
+@keyframes bird-glide-3 {
+  0%   { left: -6%; opacity: 0; }
+  5%   { opacity: 0.4; }
+  90%  { opacity: 0.4; }
+  100% { left: 110%; opacity: 0; }
+}
+.animate-bird-1 { animation: bird-glide-1 45s linear infinite; }
+.animate-bird-2 { animation: bird-glide-2 55s linear infinite 12s; }
+.animate-bird-3 { animation: bird-glide-3 60s linear infinite 28s; }
+
+/* ── Tree and bush sway (rotate from base) ── */
+@keyframes sway-1 {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(1.2deg); }
+  75% { transform: rotate(-1deg); }
+}
+@keyframes sway-2 {
+  0%, 100% { transform: rotate(0deg); }
+  30% { transform: rotate(-1.5deg); }
+  70% { transform: rotate(1.3deg); }
+}
+@keyframes sway-3 {
+  0%, 100% { transform: rotate(0deg); }
+  35% { transform: rotate(0.8deg); }
+  65% { transform: rotate(-1.2deg); }
+}
+.animate-sway-1 { animation: sway-1 6s ease-in-out infinite; }
+.animate-sway-2 { animation: sway-2 7.5s ease-in-out infinite 1s; }
+.animate-sway-3 { animation: sway-3 5.5s ease-in-out infinite 0.5s; }
+
+/* ── Flower / sprout bob ── */
+@keyframes bob-1 {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-3px) rotate(2deg); }
+}
+@keyframes bob-2 {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-4px) rotate(-1.5deg); }
+}
+@keyframes bob-3 {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  40% { transform: translateY(-2px) rotate(1deg); }
+  80% { transform: translateY(-3px) rotate(-1deg); }
+}
+.animate-bob-1 { animation: bob-1 4s ease-in-out infinite; }
+.animate-bob-2 { animation: bob-2 5s ease-in-out infinite 0.8s; }
+.animate-bob-3 { animation: bob-3 4.5s ease-in-out infinite 1.5s; }
+
+/* ── Floating leaves ── */
 @keyframes float-leaf {
   0%, 100% { transform: translate(0, 0) rotate(0deg); }
   25% { transform: translate(4px, -6px) rotate(8deg); }
@@ -178,40 +312,22 @@
   60% { transform: translate(3px, -12px) rotate(5deg); }
   80% { transform: translate(-3px, -5px) rotate(-3deg); }
 }
-@keyframes fly-butterfly {
-  0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
-  20% { transform: translate(3px, -5px) rotate(5deg) scale(1.05); }
-  40% { transform: translate(-2px, -8px) rotate(-3deg) scale(0.95); }
-  60% { transform: translate(4px, -4px) rotate(4deg) scale(1.03); }
-  80% { transform: translate(-1px, -6px) rotate(-2deg) scale(0.98); }
-}
-@keyframes fly-butterfly-alt {
-  0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
-  25% { transform: translate(-4px, -6px) rotate(-6deg) scale(1.04); }
-  50% { transform: translate(2px, -10px) rotate(3deg) scale(0.96); }
-  75% { transform: translate(-3px, -3px) rotate(-4deg) scale(1.02); }
-}
-@keyframes drift-cloud {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(15px); }
-}
-@keyframes drift-cloud-alt {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(-12px); }
-}
-
-.animate-turbine-1 { animation: spin-turbine-1 14s linear infinite; transform-origin: center; }
-.animate-turbine-2 { animation: spin-turbine-2 16s linear infinite; transform-origin: center; }
-.animate-turbine-3 { animation: spin-turbine-3 12s linear infinite; transform-origin: center; }
 .animate-leaf-1 { animation: float-leaf 7s ease-in-out infinite; }
 .animate-leaf-2 { animation: float-leaf-alt 9s ease-in-out infinite; }
 .animate-leaf-3 { animation: float-leaf 8s ease-in-out infinite 1.5s; }
 .animate-leaf-4 { animation: float-leaf-alt 6.5s ease-in-out infinite 0.8s; }
-.animate-butterfly-1 { animation: fly-butterfly 4.5s ease-in-out infinite; }
-.animate-butterfly-2 { animation: fly-butterfly-alt 5.2s ease-in-out infinite 0.5s; }
-.animate-cloud-1 { animation: drift-cloud 30s ease-in-out infinite; }
-.animate-cloud-2 { animation: drift-cloud-alt 35s ease-in-out infinite; }
-.animate-cloud-3 { animation: drift-cloud 28s ease-in-out infinite 5s; }
+
+/* ── Car driving along the road ── */
+@keyframes car-drive {
+  0%   { left: -8%; top: 78%; transform: rotate(0deg); opacity: 0; }
+  5%   { opacity: 0.9; }
+  25%  { left: 25%; top: 74%; transform: rotate(-2deg); }
+  50%  { left: 50%; top: 72%; transform: rotate(1deg); }
+  75%  { left: 75%; top: 74%; transform: rotate(-1deg); }
+  95%  { opacity: 0.9; }
+  100% { left: 108%; top: 76%; transform: rotate(0deg); opacity: 0; }
+}
+.animate-car-drive { animation: car-drive 40s linear infinite; }
 
 /* Floating bottom nav */
 @keyframes fade-in-up {

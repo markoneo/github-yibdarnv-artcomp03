@@ -102,6 +102,10 @@ export default function Footer() {
                 Recognized for financial stability, business reliability, and excellence in operations.
               </p>
               <div className="flex flex-col sm:flex-row sm:items-center gap-3 mt-1 text-xs text-white/40">
+                <a href="mailto:info@artcomp.net" className="hover:text-white/80 transition-colors">
+                  info@artcomp.net
+                </a>
+                <span className="hidden sm:inline text-white/20">|</span>
                 <span className="flex items-center gap-1.5">
                   <MapPin size={11} />
                   Gozdna pot 10, 6240 Kozina, Slovenia

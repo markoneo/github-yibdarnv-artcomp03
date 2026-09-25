@@ -60,12 +60,12 @@ export default function Footer() {
               <img
                 src="/artcomp_badge_2024.svg"
                 alt="CompanyWall AA+ 2024"
-                className="h-20 w-auto brightness-0 invert opacity-70"
+                className="h-20 w-auto"
               />
               <img
                 src="/artcomp_badge_2025.svg"
                 alt="CompanyWall AA+ 2025"
-                className="h-20 w-auto brightness-0 invert opacity-70"
+                className="h-20 w-auto"
               />
             </div>
 

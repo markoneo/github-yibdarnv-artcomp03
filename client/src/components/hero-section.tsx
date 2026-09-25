@@ -53,7 +53,30 @@ export default function HeroSection() {
           scale: bgScale,
           y: bgY,
         }}
-      />
+      >
+        {/* Big foreground turbine rotor overlay – positioned on the baked-in hub */}
+        <div
+          className="absolute"
+          style={{ left: "47.8%", top: "33.5%", width: "5.2%", aspectRatio: "1" }}
+          aria-hidden="true"
+        >
+          {/* Mask patch: covers the static blades baked into the JPEG */}
+          <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full" style={{ zIndex: 0 }}>
+            <circle cx="50" cy="50" r="50" fill="#dfeee6" />
+          </svg>
+          {/* Spinning rotor */}
+          <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full animate-turbine-big" style={{ zIndex: 1, willChange: "transform" }}>
+            <g style={{ transformOrigin: "50px 50px" }}>
+              {/* Three blades matching the illustration style */}
+              <line x1="50" y1="50" x2="50" y2="5" stroke="#5cad80" strokeWidth="5" strokeLinecap="round" />
+              <line x1="50" y1="50" x2="89" y2="72.5" stroke="#5cad80" strokeWidth="5" strokeLinecap="round" />
+              <line x1="50" y1="50" x2="11" y2="72.5" stroke="#5cad80" strokeWidth="5" strokeLinecap="round" />
+              {/* Hub */}
+              <circle cx="50" cy="50" r="5.5" fill="#4a9a6a" />
+            </g>
+          </svg>
+        </div>
+      </motion.div>
       <div className="absolute inset-0 bg-white/50" />
       <HeroAnimations />
 

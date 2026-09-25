@@ -169,6 +169,7 @@
 .animate-turbine-3 { animation: spin-turbine 11s linear infinite; }
 .animate-turbine-4 { animation: spin-turbine 16s linear infinite; }
 .animate-turbine-5 { animation: spin-turbine 20s linear infinite; }
+.animate-turbine-big { animation: spin-turbine 9s linear infinite; }
 
 /* ── Clouds – long seamless drifts at parallax depths ── */
 @keyframes cloud-drift-slow {

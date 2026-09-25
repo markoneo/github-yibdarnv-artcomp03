@@ -317,18 +317,6 @@
 .animate-leaf-3 { animation: float-leaf 8s ease-in-out infinite 1.5s; }
 .animate-leaf-4 { animation: float-leaf-alt 6.5s ease-in-out infinite 0.8s; }
 
-/* ── Car driving along the road ── */
-@keyframes car-drive {
-  0%   { left: -8%; top: 78%; transform: rotate(0deg); opacity: 0; }
-  5%   { opacity: 0.9; }
-  25%  { left: 25%; top: 74%; transform: rotate(-2deg); }
-  50%  { left: 50%; top: 72%; transform: rotate(1deg); }
-  75%  { left: 75%; top: 74%; transform: rotate(-1deg); }
-  95%  { opacity: 0.9; }
-  100% { left: 108%; top: 76%; transform: rotate(0deg); opacity: 0; }
-}
-.animate-car-drive { animation: car-drive 40s linear infinite; }
-
 /* Floating bottom nav */
 @keyframes fade-in-up {
   from { opacity: 0; transform: translateY(12px); }

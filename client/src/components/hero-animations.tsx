@@ -126,19 +126,6 @@ function FloatingLeaf({ x, y, animClass, size = "md" }: { x: string; y: string; 
   );
 }
 
-function Car({ animClass }: { animClass: string }) {
-  return (
-    <svg viewBox="0 0 50 24" fill="none" className={`absolute w-8 h-4 md:w-10 md:h-5 ${animClass}`} style={{ willChange: "transform" }}>
-      <rect x="5" y="8" width="40" height="12" rx="4" fill="#ffffff" opacity="0.85" />
-      <rect x="10" y="4" width="24" height="10" rx="3" fill="#ffffff" opacity="0.75" />
-      <rect x="12" y="5" width="8" height="6" rx="1" fill="#a8d8ea" opacity="0.6" />
-      <rect x="24" y="5" width="8" height="6" rx="1" fill="#a8d8ea" opacity="0.6" />
-      <circle cx="14" cy="20" r="3" fill="#555" opacity="0.5" />
-      <circle cx="36" cy="20" r="3" fill="#555" opacity="0.5" />
-    </svg>
-  );
-}
-
 export default function HeroAnimations() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(true);
@@ -214,8 +201,6 @@ export default function HeroAnimations() {
         <FloatingLeaf x="42%" y="18%" animClass="animate-leaf-1" size="sm" />
         <FloatingLeaf x="62%" y="60%" animClass="animate-leaf-2" size="md" />
 
-        {/* Car driving along the road */}
-        <Car animClass="animate-car-drive" />
       </div>
     </div>
   );

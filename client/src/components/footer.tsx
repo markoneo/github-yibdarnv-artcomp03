@@ -3,19 +3,39 @@ import { Leaf, MapPin } from "lucide-react";
 const footerLinks = [
   {
     title: "Products",
-    links: ["Booking Engine", "AI Assistant", "Seat Selector", "After-Sales Tools"],
+    links: [
+      { label: "Booking Engine" },
+      { label: "AI Assistant" },
+      { label: "Seat Selector" },
+      { label: "After-Sales Tools" },
+    ],
   },
   {
     title: "Solutions",
-    links: ["For Partners", "For Carriers", "For Governments", "EU Green Transition"],
+    links: [
+      { label: "For Partners" },
+      { label: "For Carriers" },
+      { label: "For Governments" },
+      { label: "EU Green Transition" },
+    ],
   },
   {
     title: "Company",
-    links: ["About", "Careers", "News", "Contact"],
+    links: [
+      { label: "About" },
+      { label: "Careers" },
+      { label: "News" },
+      { label: "Contact", href: "mailto:info@artcomp.net" },
+    ],
   },
   {
     title: "Resources",
-    links: ["Documentation", "API Reference", "Case Studies", "Blog"],
+    links: [
+      { label: "Documentation" },
+      { label: "API Reference" },
+      { label: "Case Studies" },
+      { label: "Blog" },
+    ],
   },
 ];
 
@@ -38,12 +58,12 @@ export default function Footer() {
               <h4 className="text-sm font-semibold text-white mb-4">{group.title}</h4>
               <ul className="flex flex-col gap-2.5">
                 {group.links.map((link) => (
-                  <li key={link}>
+                  <li key={link.label}>
                     <a
-                      href="#"
+                      href={link.href || "#"}
                       className="text-sm text-white/40 hover:text-white/80 transition-colors"
                     >
-                      {link}
+                      {link.label}
                     </a>
                   </li>
                 ))}

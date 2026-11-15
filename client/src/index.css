@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -353,3 +353,44 @@
     pointer-events: none;
   }
 }
+
+/* Artcomp homepage (2026 redesign) */
+html { scroll-behavior: smooth; }
+.ac-page h1, .ac-page h2, .ac-page h3 { color: inherit; }
+.ac-page a { color: #0E7C5A; }
+.ac-page a:hover { color: #0A5C43; }
+.ac-page a, .ac-page button { transition: opacity 0.2s ease, transform 0.2s ease; }
+.ac-page a[style*="border-radius"]:hover, .ac-page button:hover { opacity: 0.88; transform: translateY(-1px); }
+.ac-page :focus-visible { outline: 3px solid #7CF2C1; outline-offset: 3px; }
+@keyframes artcompDash { to { stroke-dashoffset: -64; } }
+@keyframes artcompPulse { 0% { transform: scale(1); opacity: 0.55; } 100% { transform: scale(3.4); opacity: 0; } }
+@keyframes artcompRise { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+.ac-route { stroke-dasharray: 6 10; animation: artcompDash 2.6s linear infinite; }
+.ac-pulse { transform-box: fill-box; transform-origin: center; animation: artcompPulse 2.4s ease-out infinite; }
+.ac-page header h1 { animation: artcompRise 0.8s ease-out both; }
+.ac-reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
+.ac-reveal.ac-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .ac-route, .ac-pulse, .ac-page header h1 { animation: none; }
+}
+
+/* Hero: faded, slowly drifting network background on black */
+.ac-hero-bg { position: absolute; inset: 0; pointer-events: none; }
+.ac-hero-bg::before {
+  content: ""; position: absolute; inset: -6%;
+  background: url("/hero-network.jpg") 70% 40% / cover no-repeat;
+  opacity: 0.42; filter: saturate(0.55) brightness(0.85);
+  animation: artcompDrift 36s ease-in-out infinite alternate;
+}
+.ac-hero-bg::after {
+  content: ""; position: absolute; inset: 0;
+  background:
+    linear-gradient(90deg, #0B0F0E 0%, rgba(11, 15, 14, 0.82) 38%, rgba(11, 15, 14, 0.35) 100%),
+    linear-gradient(180deg, rgba(11, 15, 14, 0.55) 0%, rgba(11, 15, 14, 0) 30%, rgba(11, 15, 14, 0) 70%, #0B0F0E 100%);
+}
+@keyframes artcompDrift {
+  from { transform: scale(1) translate(0, 0); }
+  to { transform: scale(1.14) translate(-2.5%, -2%); }
+}
+@media (prefers-reduced-motion: reduce) { .ac-hero-bg::before { animation: none; } }

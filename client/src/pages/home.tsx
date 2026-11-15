@@ -121,8 +121,9 @@ export default function Home() {
     <div className="ac-page">
 <div style={{"background": "#0B0F0E", "color": "#0B0F0E", "fontFamily": "Inter, system-ui, sans-serif", "fontSize": "18px", "lineHeight": "1.5", "minHeight": "100vh"}}>
 
-<header style={{"background": "#0B0F0E", "color": "#FFFFFF"}}>
-<div style={{"maxWidth": "1240px", "margin": "0 auto", "padding": "0 32px", "boxSizing": "border-box"}}>
+<header style={{"background": "#0B0F0E", "color": "#FFFFFF", "position": "relative", "overflow": "hidden"}}>
+<div className="ac-hero-bg" aria-hidden="true" />
+<div style={{"maxWidth": "1240px", "margin": "0 auto", "padding": "0 32px", "boxSizing": "border-box", "position": "relative", "zIndex": 1}}>
 <nav aria-label={"Main"} style={{"display": "flex", "flexWrap": "wrap", "alignItems": "center", "justifyContent": "space-between", "gap": "16px 32px", "padding": "26px 0"}}>
 <a href={"#top"} style={{"display": "flex", "alignItems": "center", "gap": "12px", "color": "#FFFFFF", "textDecoration": "none"}}>
 <svg aria-hidden={"true"} width={"34"} height={"34"} viewBox={"0 0 34 34"} fill={"none"}><rect width={"34"} height={"34"} rx={"10"} fill={"#0E7C5A"} /><path d={"M8 24c5 0 6-3 9-7s4-7 9-7"} stroke={"#FFFFFF"} strokeWidth={"2.6"} strokeLinecap={"round"} /><circle cx={"26"} cy={"10"} r={"2.6"} fill={"#7CF2C1"} /></svg>

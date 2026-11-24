@@ -394,3 +394,6 @@ html { scroll-behavior: smooth; }
   to { transform: scale(1.14) translate(-2.5%, -2%); }
 }
 @media (prefers-reduced-motion: reduce) { .ac-hero-bg::before { animation: none; } }
+
+/* Sample rides panel in the RidePilot card: hidden on phones */
+@media (max-width: 767px) { .ac-rides-demo { display: none !important; } }

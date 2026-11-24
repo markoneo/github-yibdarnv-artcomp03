@@ -267,6 +267,19 @@ export default function Home() {
 <a href={"https://www.ridepilot.org"} style={{"background": "#FFFFFF", "color": "#0B0F0E", "textDecoration": "none", "padding": "14px 24px", "borderRadius": "999px", "fontWeight": "600", "fontSize": "16px"}}>Visit ridepilot.org</a>
 <span style={{"fontSize": "16px", "color": "#9AA39F"}}>From €39 per month</span>
 </div>
+<div style={{"display": "flex", "flexDirection": "column", "gap": "12px", "borderTop": "1px solid #26302C", "paddingTop": "20px", "marginTop": "6px"}}>
+<span style={{"fontSize": "14px", "color": "#9AA39F"}}>RidePilot Driver app for your drivers</span>
+<div style={{"display": "flex", "flexWrap": "wrap", "gap": "12px"}}>
+<a href="https://apps.apple.com/app/ridepilot-driver/id6832713985" target="_blank" rel="noopener noreferrer" style={{"display": "inline-flex", "alignItems": "center", "gap": "12px", "background": "#000000", "border": "1px solid #A6A6A6", "color": "#FFFFFF", "textDecoration": "none", "padding": "8px 18px 8px 14px", "borderRadius": "10px", "minHeight": "52px", "boxSizing": "border-box"}}>
+<svg aria-hidden="true" width="26" height="26" viewBox="0 0 26 26" fill="none"><rect x="7" y="2" width="12" height="22" rx="3" stroke="#FFFFFF" strokeWidth="1.8" /><path d="M11 20h4" stroke="#FFFFFF" strokeWidth="1.8" strokeLinecap="round" /></svg>
+<span style={{"display": "flex", "flexDirection": "column", "gap": "2px", "textAlign": "left"}}><span style={{"fontSize": "11px", "lineHeight": 1.1, "color": "#FFFFFF"}}>Download on the</span><span style={{"fontSize": "20px", "lineHeight": 1.1, "fontWeight": 600, "letterSpacing": "-0.01em", "color": "#FFFFFF"}}>App Store</span></span>
+</a>
+<a href="https://www.ridepilot.org/app/RidePilot-Driver.apk" style={{"display": "inline-flex", "alignItems": "center", "gap": "12px", "background": "#000000", "border": "1px solid #A6A6A6", "color": "#FFFFFF", "textDecoration": "none", "padding": "8px 18px 8px 14px", "borderRadius": "10px", "minHeight": "52px", "boxSizing": "border-box"}}>
+<svg aria-hidden="true" width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 4v12M8 11.5l5 5 5-5M5 21.5h16" stroke="#FFFFFF" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+<span style={{"display": "flex", "flexDirection": "column", "gap": "2px", "textAlign": "left"}}><span style={{"fontSize": "11px", "lineHeight": 1.1, "color": "#FFFFFF"}}>Download the</span><span style={{"fontSize": "20px", "lineHeight": 1.1, "fontWeight": 600, "letterSpacing": "-0.01em", "color": "#FFFFFF"}}>Android APK</span></span>
+</a>
+</div>
+</div>
 </div>
 <div style={{"flex": "1.3 1 420px", "minWidth": "0", "background": "#151C1A", "border": "1px solid #26302C", "borderRadius": "24px", "padding": "20px", "boxSizing": "border-box", "display": "flex", "flexDirection": "column", "gap": "12px"}}>
 <div style={{"display": "flex", "justifyContent": "space-between", "alignItems": "center", "gap": "12px", "padding": "4px 6px 8px"}}>

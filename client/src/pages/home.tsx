@@ -281,7 +281,7 @@ export default function Home() {
 </div>
 </div>
 </div>
-<div style={{"flex": "1.3 1 420px", "minWidth": "0", "background": "#151C1A", "border": "1px solid #26302C", "borderRadius": "24px", "padding": "20px", "boxSizing": "border-box", "display": "flex", "flexDirection": "column", "gap": "12px"}}>
+<div className="ac-rides-demo" style={{"flex": "1.3 1 420px", "minWidth": "0", "background": "#151C1A", "border": "1px solid #26302C", "borderRadius": "24px", "padding": "20px", "boxSizing": "border-box", "display": "flex", "flexDirection": "column", "gap": "12px"}}>
 <div style={{"display": "flex", "justifyContent": "space-between", "alignItems": "center", "gap": "12px", "padding": "4px 6px 8px"}}>
 <span style={{"fontWeight": "600", "fontSize": "16px"}}>Today's rides</span>
 <span style={{"fontSize": "13px", "color": "#9AA39F"}}>Sample data</span>

@@ -1,4 +1,28 @@
-import { useEffect, useState, type CSSProperties, type FormEvent } from "react";
+import { Suspense, lazy, useEffect, useRef, useState, type CSSProperties, type FormEvent } from "react";
+
+const Spline = lazy(() => import("@splinetool/react-spline"));
+
+// The 3D robot from robotaxi.hr. It is heavy, so it loads only when the card is close to the screen.
+function RobotScene() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (!("IntersectionObserver" in window)) { setShow(true); return; }
+    const io = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) { setShow(true); io.disconnect(); }
+    }, { rootMargin: "400px" });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  const loading = <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#9AA39F", fontSize: "14px" }}>Loading the robot…</div>;
+  return (
+    <div ref={ref} role="img" aria-label="3D robot from robotaxi.hr that follows your cursor" style={{ width: "100%", height: "clamp(300px, 34vw, 440px)" }}>
+      {show ? <Suspense fallback={loading}><Spline scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode" style={{ width: "100%", height: "100%" }} /></Suspense> : loading}
+    </div>
+  );
+}
 
 const CONTACT_EMAIL = "info@artcomp.net";
 
@@ -157,8 +181,8 @@ export default function Home() {
 </div>
 <div style={{"display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(min(130px, 100%), 1fr))", "gap": "20px", "borderTop": "1px solid #26302C", "paddingTop": "28px"}}>
 <div style={{"display": "flex", "flexDirection": "column", "gap": "4px"}}>
-<span style={{"fontFamily": "'Bricolage Grotesque', Inter, sans-serif", "fontWeight": "800", "fontSize": "34px", "letterSpacing": "-0.03em"}}>3</span>
-<span style={{"fontSize": "14px", "color": "#9AA39F"}}>software products</span>
+<span style={{"fontFamily": "'Bricolage Grotesque', Inter, sans-serif", "fontWeight": "800", "fontSize": "34px", "letterSpacing": "-0.03em"}}>4</span>
+<span style={{"fontSize": "14px", "color": "#9AA39F"}}>projects of our own</span>
 </div>
 <div style={{"display": "flex", "flexDirection": "column", "gap": "4px"}}>
 <span style={{"fontFamily": "'Bricolage Grotesque', Inter, sans-serif", "fontWeight": "800", "fontSize": "34px", "letterSpacing": "-0.03em"}}>3</span>
@@ -376,25 +400,8 @@ export default function Home() {
 <p style={{"margin": "0", "color": "#C9D1CE", "maxWidth": "46ch"}}>Our next project: a taxi with no driver. The site shows what is inside one, part by part, as you scroll.</p>
 <a href={"https://www.robotaxi.hr"} style={{"alignSelf": "flex-start", "background": "#FFFFFF", "color": "#0B0F0E", "textDecoration": "none", "padding": "14px 24px", "borderRadius": "999px", "fontWeight": "600", "fontSize": "16px"}}>Visit robotaxi.hr</a>
 </div>
-<div style={{"flex": "1.3 1 420px", "minWidth": "0", "background": "#151C1A", "border": "1px solid #26302C", "borderRadius": "24px", "padding": "clamp(16px, 3vw, 32px)", "boxSizing": "border-box"}}>
-<svg role="img" aria-label="Line drawing of a driverless taxi" viewBox="90 110 820 380" style={{"display": "block", "width": "100%", "height": "auto"}} fill="none" stroke="#C9D1CE" strokeWidth="2.5" strokeLinejoin="round">
-<line x1="110" y1="460" x2="890" y2="460" stroke="#26302C" strokeWidth="2" />
-<rect x="340" y="366" width="320" height="38" rx="8" fill="#0B0F0E" stroke="#7CF2C1" />
-<path d="M150 386 L150 215 Q150 172 195 170 L770 170 Q822 172 838 215 L850 330 L850 386 L798 386 A68 68 0 0 0 662 386 L338 386 A68 68 0 0 0 202 386 Z" fill="#1B2421" fillOpacity="0.85" />
-<path d="M186 214 Q186 200 200 200 L775 200 Q803 200 809 226 L821 296 L186 296 Z" fill="#26302C" strokeWidth="2" />
-<path d="M430 200 V372 H570 V200 M500 200 V372" strokeWidth="1.5" opacity="0.6" />
-<rect x="808" y="336" width="34" height="6" rx="3" fill="#7CF2C1" stroke="none" />
-<rect x="158" y="336" width="34" height="6" rx="3" fill="#B3261E" stroke="none" />
-<rect x="466" y="158" width="68" height="12" rx="4" fill="#151C1A" stroke="#7CF2C1" />
-<path d="M474 158 v-18 a26 14 0 0 1 52 0 v18 z" fill="#151C1A" stroke="#7CF2C1" />
-<rect x="301" y="152" width="34" height="18" rx="6" fill="#151C1A" />
-<rect x="665" y="152" width="34" height="18" rx="6" fill="#151C1A" />
-<rect x="139" y="344" width="22" height="30" rx="6" fill="#151C1A" />
-<rect x="839" y="344" width="22" height="30" rx="6" fill="#151C1A" />
-<path d="M874 346 a22 22 0 0 1 0 26 M884 338 a34 34 0 0 1 0 42 M126 346 a22 22 0 0 0 0 26 M116 338 a34 34 0 0 0 0 42" strokeWidth="1.5" opacity="0.5" />
-<circle cx="270" cy="402" r="58" fill="#0B0F0E" /><circle cx="270" cy="402" r="40" strokeWidth="1.5" opacity="0.5" /><circle cx="270" cy="402" r="22" fill="#151C1A" strokeWidth="2" />
-<circle cx="730" cy="402" r="58" fill="#0B0F0E" /><circle cx="730" cy="402" r="40" strokeWidth="1.5" opacity="0.5" /><circle cx="730" cy="402" r="22" fill="#151C1A" strokeWidth="2" />
-</svg>
+<div style={{"flex": "1.3 1 420px", "minWidth": "0", "background": "#151C1A", "border": "1px solid #26302C", "borderRadius": "24px", "overflow": "hidden", "boxSizing": "border-box"}}>
+<RobotScene />
 </div>
 </article>
 </div>

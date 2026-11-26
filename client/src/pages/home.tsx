@@ -1,4 +1,28 @@
-import { useEffect, useState, type CSSProperties, type FormEvent } from "react";
+import { Suspense, lazy, useEffect, useRef, useState, type CSSProperties, type FormEvent } from "react";
+
+const Spline = lazy(() => import("@splinetool/react-spline"));
+
+// The 3D robot from robotaxi.hr. It is heavy, so it loads only when the card is close to the screen.
+function RobotScene() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (!("IntersectionObserver" in window)) { setShow(true); return; }
+    const io = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) { setShow(true); io.disconnect(); }
+    }, { rootMargin: "400px" });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  const loading = <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#9AA39F", fontSize: "14px" }}>Loading the robot…</div>;
+  return (
+    <div ref={ref} role="img" aria-label="3D robot from robotaxi.hr that follows your cursor" style={{ width: "100%", height: "clamp(300px, 34vw, 440px)" }}>
+      {show ? <Suspense fallback={loading}><Spline scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode" style={{ width: "100%", height: "100%" }} /></Suspense> : loading}
+    </div>
+  );
+}
 
 const CONTACT_EMAIL = "info@artcomp.net";
 
@@ -21,6 +45,7 @@ const TOPICS = [
   "RidePilot dispatch software",
   "Monetar Finance",
   "Range Pilot",
+  "Robotaxi",
   "A partnership",
 ];
 
@@ -156,8 +181,8 @@ export default function Home() {
 </div>
 <div style={{"display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(min(130px, 100%), 1fr))", "gap": "20px", "borderTop": "1px solid #26302C", "paddingTop": "28px"}}>
 <div style={{"display": "flex", "flexDirection": "column", "gap": "4px"}}>
-<span style={{"fontFamily": "'Bricolage Grotesque', Inter, sans-serif", "fontWeight": "800", "fontSize": "34px", "letterSpacing": "-0.03em"}}>3</span>
-<span style={{"fontSize": "14px", "color": "#9AA39F"}}>software products</span>
+<span style={{"fontFamily": "'Bricolage Grotesque', Inter, sans-serif", "fontWeight": "800", "fontSize": "34px", "letterSpacing": "-0.03em"}}>4</span>
+<span style={{"fontSize": "14px", "color": "#9AA39F"}}>projects of our own</span>
 </div>
 <div style={{"display": "flex", "flexDirection": "column", "gap": "4px"}}>
 <span style={{"fontFamily": "'Bricolage Grotesque', Inter, sans-serif", "fontWeight": "800", "fontSize": "34px", "letterSpacing": "-0.03em"}}>3</span>
@@ -247,9 +272,9 @@ export default function Home() {
 <div style={{"display": "flex", "flexWrap": "wrap", "justifyContent": "space-between", "alignItems": "flex-end", "gap": "24px 64px"}}>
 <div style={{"display": "flex", "flexDirection": "column", "gap": "18px", "flex": "1 1 520px", "minWidth": "0"}}>
 <span style={{"fontSize": "14px", "fontWeight": "600", "letterSpacing": "0.12em", "textTransform": "uppercase", "color": "#0E7C5A"}}>01 · Software</span>
-<h2 style={{"margin": "0", "fontFamily": "'Bricolage Grotesque', Inter, sans-serif", "fontWeight": "800", "fontSize": "clamp(38px, 4.8vw, 72px)", "lineHeight": "0.98", "letterSpacing": "-0.04em"}}>Three products,{" "}<span style={{"fontFamily": "'Instrument Serif', Georgia, serif", "fontWeight": "400", "fontStyle": "italic", "letterSpacing": "-0.02em"}}>each born from</span>{" "}a real problem.</h2>
+<h2 style={{"margin": "0", "fontFamily": "'Bricolage Grotesque', Inter, sans-serif", "fontWeight": "800", "fontSize": "clamp(38px, 4.8vw, 72px)", "lineHeight": "0.98", "letterSpacing": "-0.04em"}}>Three products{" "}<span style={{"fontFamily": "'Instrument Serif', Georgia, serif", "fontWeight": "400", "fontStyle": "italic", "letterSpacing": "-0.02em"}}>in daily use,</span>{" "}and one on the way.</h2>
 </div>
-<p style={{"margin": "0", "flex": "0 1 360px", "color": "#4A5350"}}>We use every one of them in our own business, every day.</p>
+<p style={{"margin": "0", "flex": "0 1 360px", "color": "#4A5350"}}>We use the first three in our own business, every day. The fourth is about what comes next.</p>
 </div>
 
 <article style={{"background": "#0B0F0E", "color": "#FFFFFF", "borderRadius": "32px", "padding": "clamp(28px, 4vw, 56px)", "boxSizing": "border-box", "display": "flex", "flexWrap": "wrap", "gap": "40px 56px", "alignItems": "center"}}>
@@ -367,6 +392,18 @@ export default function Home() {
 <a href={"https://rangepilot.net"} style={{"alignSelf": "flex-start", "background": "#0B0F0E", "color": "#FFFFFF", "textDecoration": "none", "padding": "14px 24px", "borderRadius": "999px", "fontWeight": "600", "fontSize": "16px", "marginTop": "auto"}}>Visit rangepilot.net</a>
 </article>
 </div>
+
+<article style={{"background": "#0B0F0E", "color": "#FFFFFF", "borderRadius": "32px", "padding": "clamp(28px, 4vw, 56px)", "boxSizing": "border-box", "display": "flex", "flexWrap": "wrap", "gap": "40px 56px", "alignItems": "center"}}>
+<div style={{"flex": "1 1 340px", "minWidth": "0", "display": "flex", "flexDirection": "column", "gap": "22px"}}>
+<span style={{"fontSize": "14px", "fontWeight": "600", "letterSpacing": "0.12em", "textTransform": "uppercase", "color": "#7CF2C1"}}>Driverless taxis for Croatia</span>
+<h3 style={{"margin": "0", "fontFamily": "'Bricolage Grotesque', Inter, sans-serif", "fontWeight": "800", "fontSize": "clamp(36px, 4vw, 56px)", "lineHeight": "1", "letterSpacing": "-0.04em"}}>Robotaxi</h3>
+<p style={{"margin": "0", "color": "#C9D1CE", "maxWidth": "46ch"}}>Our next project: a taxi with no driver. The site shows what is inside one, part by part, as you scroll.</p>
+<a href={"https://www.robotaxi.hr"} style={{"alignSelf": "flex-start", "background": "#FFFFFF", "color": "#0B0F0E", "textDecoration": "none", "padding": "14px 24px", "borderRadius": "999px", "fontWeight": "600", "fontSize": "16px"}}>Visit robotaxi.hr</a>
+</div>
+<div style={{"flex": "1.3 1 420px", "minWidth": "0", "background": "#151C1A", "border": "1px solid #26302C", "borderRadius": "24px", "overflow": "hidden", "boxSizing": "border-box"}}>
+<RobotScene />
+</div>
+</article>
 </div>
 </section>
 
@@ -524,6 +561,7 @@ export default function Home() {
 <a href={"https://www.ridepilot.org"} style={{"color": "#FFFFFF", "textDecoration": "none"}}>RidePilot</a>
 <a href={"https://www.monetar.finance"} style={{"color": "#FFFFFF", "textDecoration": "none"}}>Monetar Finance</a>
 <a href={"https://rangepilot.net"} style={{"color": "#FFFFFF", "textDecoration": "none"}}>Range Pilot</a>
+<a href={"https://www.robotaxi.hr"} style={{"color": "#FFFFFF", "textDecoration": "none"}}>Robotaxi</a>
 </div>
 <div style={{"display": "flex", "flexDirection": "column", "gap": "12px", "fontSize": "16px"}}>
 <span style={{"fontSize": "14px", "fontWeight": "600", "letterSpacing": "0.12em", "textTransform": "uppercase", "color": "#9AA39F"}}>Company</span>

@@ -139,7 +139,108 @@ export default function Home() {
       { threshold: 0.12 },
     );
     els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
+
+    // Wrap every word of an element in a span, keeping nested spans (italic accents) intact.
+    const splitWords = (root: HTMLElement, cls: string): HTMLElement[] => {
+      if (root.dataset.split) return Array.from(root.querySelectorAll<HTMLElement>("." + cls));
+      root.dataset.split = "1";
+      const out: HTMLElement[] = [];
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      const texts: Text[] = [];
+      while (walker.nextNode()) texts.push(walker.currentNode as Text);
+      texts.forEach((node) => {
+        const frag = document.createDocumentFragment();
+        (node.textContent || "").split(/(\s+)/).forEach((part) => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) {
+            frag.appendChild(document.createTextNode(" "));
+            return;
+          }
+          const w = document.createElement("span");
+          w.className = cls;
+          w.textContent = part;
+          frag.appendChild(w);
+          out.push(w);
+        });
+        node.parentNode?.replaceChild(frag, node);
+      });
+      return out;
+    };
+
+    // Numbers count up once when they scroll into view.
+    const fmt = (n: number) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    const counts = Array.from(document.querySelectorAll<HTMLElement>(".ac-count"));
+    const countIo = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target as HTMLElement;
+          countIo.unobserve(el);
+          const target = Number(el.dataset.count || 0);
+          const suffix = el.dataset.suffix || "";
+          const start = performance.now();
+          const dur = 1600;
+          const tick = (now: number) => {
+            const t = Math.min(1, (now - start) / dur);
+            const eased = 1 - Math.pow(1 - t, 3);
+            el.textContent = fmt(target * eased) + suffix;
+            if (t < 1) requestAnimationFrame(tick);
+          };
+          el.textContent = "0" + suffix;
+          requestAnimationFrame(tick);
+        });
+      },
+      { threshold: 0.6 },
+    );
+    counts.forEach((el) => {
+      el.style.fontVariantNumeric = "tabular-nums";
+      countIo.observe(el);
+    });
+
+    // Section headlines: words rise in one after another.
+    const headIo = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("ac-words-in");
+          headIo.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.4 },
+    );
+    document.querySelectorAll<HTMLElement>(".ac-words").forEach((h) => {
+      splitWords(h, "ac-word").forEach((w, i) => (w.style.transitionDelay = i * 55 + "ms"));
+      headIo.observe(h);
+    });
+
+    // "Who we are" statement: words light up as the reader scrolls through it.
+    const statement = document.querySelector<HTMLElement>(".ac-scrolltext");
+    const sWords = statement ? splitWords(statement, "ac-sword") : [];
+    let raf = 0;
+    const paint = () => {
+      raf = 0;
+      if (!statement) return;
+      const r = statement.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const progress = Math.max(0, Math.min(1, (vh * 0.85 - r.top) / (r.height + vh * 0.35)));
+      const lit = progress * sWords.length;
+      sWords.forEach((w, i) => w.classList.toggle("ac-lit", i < lit));
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(paint);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    paint();
+
+    return () => {
+      io.disconnect();
+      countIo.disconnect();
+      headIo.disconnect();
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, []);
 
   return (
@@ -263,7 +364,7 @@ export default function Home() {
 <section style={{"background": "#FFFFFF"}}>
 <div style={{"maxWidth": "1240px", "margin": "0 auto", "padding": "128px 32px", "boxSizing": "border-box", "display": "flex", "flexWrap": "wrap", "gap": "32px 64px"}}>
 <div style={{"flex": "0 1 220px", "fontSize": "14px", "fontWeight": "600", "letterSpacing": "0.12em", "textTransform": "uppercase", "color": "#0E7C5A", "paddingTop": "14px"}}>Who we are</div>
-<p style={{"flex": "999 1 560px", "minWidth": "0", "margin": "0", "fontFamily": "'Bricolage Grotesque', Inter, sans-serif", "fontWeight": "700", "fontSize": "clamp(28px, 3.4vw, 48px)", "lineHeight": "1.14", "letterSpacing": "-0.03em", "textWrap": "pretty"}}>A small Slovenian company with two sides. On the road, we take travellers where they need to be. At the desk, we build software that makes transport companies leaner:{" "}<span style={{"fontFamily": "'Instrument Serif', Georgia, serif", "fontWeight": "400", "fontStyle": "italic", "letterSpacing": "-0.01em", "color": "#0E7C5A"}}>less fuel, less waiting, better logistics.</span></p>
+<p className="ac-scrolltext" style={{"flex": "999 1 560px", "minWidth": "0", "margin": "0", "fontFamily": "'Bricolage Grotesque', Inter, sans-serif", "fontWeight": "700", "fontSize": "clamp(28px, 3.4vw, 48px)", "lineHeight": "1.14", "letterSpacing": "-0.03em", "textWrap": "pretty"}}>A small Slovenian company with two sides. On the road, we take travellers where they need to be. At the desk, we build software that makes transport companies leaner:{" "}<span style={{"fontFamily": "'Instrument Serif', Georgia, serif", "fontWeight": "400", "fontStyle": "italic", "letterSpacing": "-0.01em", "color": "#0E7C5A"}}>less fuel, less waiting, better logistics.</span></p>
 </div>
 </section>
 
@@ -272,7 +373,7 @@ export default function Home() {
 <div style={{"display": "flex", "flexWrap": "wrap", "justifyContent": "space-between", "alignItems": "flex-end", "gap": "24px 64px"}}>
 <div style={{"display": "flex", "flexDirection": "column", "gap": "18px", "flex": "1 1 520px", "minWidth": "0"}}>
 <span style={{"fontSize": "14px", "fontWeight": "600", "letterSpacing": "0.12em", "textTransform": "uppercase", "color": "#0E7C5A"}}>01 · Software</span>
-<h2 style={{"margin": "0", "fontFamily": "'Bricolage Grotesque', Inter, sans-serif", "fontWeight": "800", "fontSize": "clamp(38px, 4.8vw, 72px)", "lineHeight": "0.98", "letterSpacing": "-0.04em"}}>Three products{" "}<span style={{"fontFamily": "'Instrument Serif', Georgia, serif", "fontWeight": "400", "fontStyle": "italic", "letterSpacing": "-0.02em"}}>in daily use,</span>{" "}and one on the way.</h2>
+<h2 className="ac-words" style={{"margin": "0", "fontFamily": "'Bricolage Grotesque', Inter, sans-serif", "fontWeight": "800", "fontSize": "clamp(38px, 4.8vw, 72px)", "lineHeight": "0.98", "letterSpacing": "-0.04em"}}>Three products{" "}<span style={{"fontFamily": "'Instrument Serif', Georgia, serif", "fontWeight": "400", "fontStyle": "italic", "letterSpacing": "-0.02em"}}>in daily use,</span>{" "}and one on the way.</h2>
 </div>
 <p style={{"margin": "0", "flex": "0 1 360px", "color": "#4A5350"}}>We use the first three in our own business, every day. The fourth is about what comes next.</p>
 </div>
@@ -412,7 +513,7 @@ export default function Home() {
 <div style={{"display": "flex", "flexWrap": "wrap", "justifyContent": "space-between", "alignItems": "flex-end", "gap": "24px 64px"}}>
 <div style={{"display": "flex", "flexDirection": "column", "gap": "18px", "flex": "1 1 520px", "minWidth": "0"}}>
 <span style={{"fontSize": "14px", "fontWeight": "600", "letterSpacing": "0.12em", "textTransform": "uppercase", "color": "#0E7C5A"}}>02 · Greener transport</span>
-<h2 style={{"margin": "0", "fontFamily": "'Bricolage Grotesque', Inter, sans-serif", "fontWeight": "800", "fontSize": "clamp(38px, 4.8vw, 72px)", "lineHeight": "0.98", "letterSpacing": "-0.04em"}}>Fewer empty kilometres.{" "}<span style={{"fontFamily": "'Instrument Serif', Georgia, serif", "fontWeight": "400", "fontStyle": "italic", "letterSpacing": "-0.02em", "color": "#0E7C5A"}}>Less fuel.</span>{" "}More time.</h2>
+<h2 className="ac-words" style={{"margin": "0", "fontFamily": "'Bricolage Grotesque', Inter, sans-serif", "fontWeight": "800", "fontSize": "clamp(38px, 4.8vw, 72px)", "lineHeight": "0.98", "letterSpacing": "-0.04em"}}>Fewer empty kilometres.{" "}<span style={{"fontFamily": "'Instrument Serif', Georgia, serif", "fontWeight": "400", "fontStyle": "italic", "letterSpacing": "-0.02em", "color": "#0E7C5A"}}>Less fuel.</span>{" "}More time.</h2>
 </div>
 <p style={{"margin": "0", "flex": "0 1 360px", "color": "#4A5350"}}>The greenest kilometre is the one nobody has to drive. Our products are built to remove it.</p>
 </div>
@@ -436,19 +537,19 @@ export default function Home() {
 <div style={{"display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(min(300px, 100%), 1fr))", "gap": "24px"}}>
 <div style={{"display": "flex", "flexDirection": "column", "gap": "10px", "background": "#0B0F0E", "color": "#FFFFFF", "borderRadius": "28px", "padding": "32px", "boxSizing": "border-box"}}>
 <span style={{"fontSize": "13px", "fontWeight": "600", "letterSpacing": "0.12em", "textTransform": "uppercase", "color": "#7CF2C1"}}>Diesel replaced by electric</span>
-<span style={{"fontFamily": "'Bricolage Grotesque', Inter, sans-serif", "fontWeight": "800", "fontSize": "clamp(40px, 4.2vw, 60px)", "lineHeight": "1", "letterSpacing": "-0.04em"}}>93.100 g</span>
+<span className="ac-count" data-count="93100" data-suffix=" g" style={{"fontFamily": "'Bricolage Grotesque', Inter, sans-serif", "fontWeight": "800", "fontSize": "clamp(40px, 4.2vw, 60px)", "lineHeight": "1", "letterSpacing": "-0.04em"}}>93.100 g</span>
 <span style={{"fontWeight": "600", "fontSize": "17px"}}>of CO₂ less from the exhaust, per vehicle per day</span>
 <span style={{"fontSize": "15px", "color": "#C9D1CE"}}>One vehicle driving 500 km a day. About 73.000 g a day after counting the electricity used for charging.</span>
 </div>
 <div style={{"display": "flex", "flexDirection": "column", "gap": "10px", "background": "#0B0F0E", "color": "#FFFFFF", "borderRadius": "28px", "padding": "32px", "boxSizing": "border-box"}}>
 <span style={{"fontSize": "13px", "fontWeight": "600", "letterSpacing": "0.12em", "textTransform": "uppercase", "color": "#7CF2C1"}}>Empty kilometres</span>
-<span style={{"fontFamily": "'Bricolage Grotesque', Inter, sans-serif", "fontWeight": "800", "fontSize": "clamp(40px, 4.2vw, 60px)", "lineHeight": "1", "letterSpacing": "-0.04em"}}>9.300 g</span>
+<span className="ac-count" data-count="9300" data-suffix=" g" style={{"fontFamily": "'Bricolage Grotesque', Inter, sans-serif", "fontWeight": "800", "fontSize": "clamp(40px, 4.2vw, 60px)", "lineHeight": "1", "letterSpacing": "-0.04em"}}>9.300 g</span>
 <span style={{"fontWeight": "600", "fontSize": "17px"}}>of CO₂ avoided with every empty 50 km run we skip</span>
 <span style={{"fontSize": "15px", "color": "#C9D1CE"}}>RidePilot gives the ride to a driver already nearby. Each skipped run also saves 3,5 litres of diesel.</span>
 </div>
 <div style={{"display": "flex", "flexDirection": "column", "gap": "10px", "background": "#0B0F0E", "color": "#FFFFFF", "borderRadius": "28px", "padding": "32px", "boxSizing": "border-box"}}>
 <span style={{"fontSize": "13px", "fontWeight": "600", "letterSpacing": "0.12em", "textTransform": "uppercase", "color": "#7CF2C1"}}>Electric share</span>
-<span style={{"fontFamily": "'Bricolage Grotesque', Inter, sans-serif", "fontWeight": "800", "fontSize": "clamp(40px, 4.2vw, 60px)", "lineHeight": "1", "letterSpacing": "-0.04em"}}>60 %</span>
+<span className="ac-count" data-count="60" data-suffix=" %" style={{"fontFamily": "'Bricolage Grotesque', Inter, sans-serif", "fontWeight": "800", "fontSize": "clamp(40px, 4.2vw, 60px)", "lineHeight": "1", "letterSpacing": "-0.04em"}}>60 %</span>
 <span style={{"fontWeight": "600", "fontSize": "17px"}}>of our kilometres are electric, and growing</span>
 <span style={{"fontSize": "15px", "color": "#C9D1CE"}}>Every electric kilometre has no exhaust emissions.</span>
 </div>
@@ -462,7 +563,7 @@ export default function Home() {
 <div style={{"display": "flex", "flexWrap": "wrap", "justifyContent": "space-between", "alignItems": "flex-end", "gap": "24px 64px"}}>
 <div style={{"display": "flex", "flexDirection": "column", "gap": "18px", "flex": "1 1 520px", "minWidth": "0"}}>
 <span style={{"fontSize": "14px", "fontWeight": "600", "letterSpacing": "0.12em", "textTransform": "uppercase", "color": "#7CF2C1"}}>03 · Transfers</span>
-<h2 style={{"margin": "0", "fontFamily": "'Bricolage Grotesque', Inter, sans-serif", "fontWeight": "800", "fontSize": "clamp(38px, 4.8vw, 72px)", "lineHeight": "0.98", "letterSpacing": "-0.04em"}}>Door to door,{" "}<span style={{"fontFamily": "'Instrument Serif', Georgia, serif", "fontWeight": "400", "fontStyle": "italic", "letterSpacing": "-0.02em", "color": "#7CF2C1"}}>from the Adriatic</span>{" "}to the Alps.</h2>
+<h2 className="ac-words" style={{"margin": "0", "fontFamily": "'Bricolage Grotesque', Inter, sans-serif", "fontWeight": "800", "fontSize": "clamp(38px, 4.8vw, 72px)", "lineHeight": "0.98", "letterSpacing": "-0.04em"}}>Door to door,{" "}<span style={{"fontFamily": "'Instrument Serif', Georgia, serif", "fontWeight": "400", "fontStyle": "italic", "letterSpacing": "-0.02em", "color": "#7CF2C1"}}>from the Adriatic</span>{" "}to the Alps.</h2>
 </div>
 <p style={{"margin": "0", "flex": "0 1 360px", "color": "#CFE3DB"}}>Private cars and vans with our own drivers and trusted partners, for airports, cruise ports and ski resorts.</p>
 </div>
@@ -494,7 +595,7 @@ export default function Home() {
 <div style={{"maxWidth": "1240px", "margin": "0 auto", "padding": "120px 32px", "boxSizing": "border-box", "display": "flex", "flexDirection": "column", "gap": "56px"}}>
 <div style={{"display": "flex", "flexDirection": "column", "gap": "18px", "maxWidth": "900px"}}>
 <span style={{"fontSize": "14px", "fontWeight": "600", "letterSpacing": "0.12em", "textTransform": "uppercase", "color": "#0E7C5A"}}>04 · How we work</span>
-<h2 style={{"margin": "0", "fontFamily": "'Bricolage Grotesque', Inter, sans-serif", "fontWeight": "800", "fontSize": "clamp(38px, 4.8vw, 72px)", "lineHeight": "0.98", "letterSpacing": "-0.04em"}}>The road{" "}<span style={{"fontFamily": "'Instrument Serif', Georgia, serif", "fontWeight": "400", "fontStyle": "italic", "letterSpacing": "-0.02em", "color": "#0E7C5A"}}>tests</span>{" "}everything we ship.</h2>
+<h2 className="ac-words" style={{"margin": "0", "fontFamily": "'Bricolage Grotesque', Inter, sans-serif", "fontWeight": "800", "fontSize": "clamp(38px, 4.8vw, 72px)", "lineHeight": "0.98", "letterSpacing": "-0.04em"}}>The road{" "}<span style={{"fontFamily": "'Instrument Serif', Georgia, serif", "fontWeight": "400", "fontStyle": "italic", "letterSpacing": "-0.02em", "color": "#0E7C5A"}}>tests</span>{" "}everything we ship.</h2>
 </div>
 <div style={{"display": "grid", "gridTemplateColumns": "repeat(auto-fit, minmax(min(300px, 100%), 1fr))", "gap": "24px"}}>
 <div style={{"background": "#F3F4F2", "borderRadius": "28px", "padding": "32px", "boxSizing": "border-box", "display": "flex", "flexDirection": "column", "gap": "14px"}}>
@@ -538,7 +639,7 @@ export default function Home() {
 <div style={{"maxWidth": "1240px", "margin": "0 auto", "padding": "120px 32px", "boxSizing": "border-box", "display": "flex", "flexWrap": "wrap", "gap": "48px 72px"}}>
 <div style={{"flex": "1 1 380px", "minWidth": "0", "display": "flex", "flexDirection": "column", "gap": "24px"}}>
 <span style={{"fontSize": "14px", "fontWeight": "600", "letterSpacing": "0.12em", "textTransform": "uppercase", "color": "#0E7C5A"}}>Contact</span>
-<h2 style={{"margin": "0", "fontFamily": "'Bricolage Grotesque', Inter, sans-serif", "fontWeight": "800", "fontSize": "clamp(38px, 4.8vw, 72px)", "lineHeight": "0.98", "letterSpacing": "-0.04em"}}>Tell us{" "}<span style={{"fontFamily": "'Instrument Serif', Georgia, serif", "fontWeight": "400", "fontStyle": "italic", "letterSpacing": "-0.02em", "color": "#0E7C5A"}}>what you need.</span></h2>
+<h2 className="ac-words" style={{"margin": "0", "fontFamily": "'Bricolage Grotesque', Inter, sans-serif", "fontWeight": "800", "fontSize": "clamp(38px, 4.8vw, 72px)", "lineHeight": "0.98", "letterSpacing": "-0.04em"}}>Tell us{" "}<span style={{"fontFamily": "'Instrument Serif', Georgia, serif", "fontWeight": "400", "fontStyle": "italic", "letterSpacing": "-0.02em", "color": "#0E7C5A"}}>what you need.</span></h2>
 <p style={{"margin": "0", "color": "#4A5350", "maxWidth": "420px"}}>A transfer, a demo of our software, or a partnership. One message reaches the person who can answer.</p>
 <div style={{"display": "flex", "flexDirection": "column", "gap": "6px", "fontSize": "16px", "paddingTop": "8px"}}>
 <a href={"mailto:info@artcomp.net"} style={{"fontWeight": "600", "fontSize": "20px", "color": "#0B0F0E"}}>info@artcomp.net</a>
